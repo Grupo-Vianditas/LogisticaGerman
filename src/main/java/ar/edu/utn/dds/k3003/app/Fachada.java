@@ -2,10 +2,7 @@ package ar.edu.utn.dds.k3003.app;
 
 import ar.edu.utn.dds.k3003.facades.FachadaHeladeras;
 import ar.edu.utn.dds.k3003.facades.FachadaViandas;
-import ar.edu.utn.dds.k3003.facades.dtos.EstadoTrasladoEnum;
-import ar.edu.utn.dds.k3003.facades.dtos.RutaDTO;
-import ar.edu.utn.dds.k3003.facades.dtos.TrasladoDTO;
-import ar.edu.utn.dds.k3003.facades.dtos.ViandaDTO;
+import ar.edu.utn.dds.k3003.facades.dtos.*;
 import ar.edu.utn.dds.k3003.facades.exceptions.TrasladoNoAsignableException;
 import ar.edu.utn.dds.k3003.model.Ruta;
 import ar.edu.utn.dds.k3003.model.Traslado;
@@ -14,6 +11,7 @@ import ar.edu.utn.dds.k3003.repositories.RutaRepository;
 import ar.edu.utn.dds.k3003.repositories.TrasladoMapper;
 import ar.edu.utn.dds.k3003.repositories.TrasladoRepository;
 
+import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -30,7 +28,7 @@ public class Fachada implements ar.edu.utn.dds.k3003.facades.FachadaLogistica {
 
 
 
-    private Fachada() {
+    public Fachada() {
         this.rutaRepository = new RutaRepository();
         this.rutaMapper = new RutaMapper();
         this.trasladoMapper = new TrasladoMapper();
@@ -53,7 +51,7 @@ public class Fachada implements ar.edu.utn.dds.k3003.facades.FachadaLogistica {
         }
         return trasladoDTO;
     }
-
+/*
     @Override
     public TrasladoDTO asignarTraslado(TrasladoDTO trasladoDTO) throws TrasladoNoAsignableException {
 
@@ -77,6 +75,28 @@ public class Fachada implements ar.edu.utn.dds.k3003.facades.FachadaLogistica {
 
         return this.trasladoMapper.map(traslado);
     }
+    */
+
+    @Override
+    public TrasladoDTO asignarTraslado(TrasladoDTO trasladoDTO) throws TrasladoNoAsignableException {
+        ViandaDTO viandaDTO = fachadaViandas.buscarXQR(trasladoDTO.getQrVianda());
+
+        List<Ruta> rutasPosibles = this.rutaRepository.findByHeladeras(trasladoDTO.getHeladeraOrigen(),
+                trasladoDTO.getHeladeraDestino());
+
+        if (rutasPosibles.isEmpty()) {
+            throw new TrasladoNoAsignableException();
+        }
+
+        Collections.shuffle(rutasPosibles);
+        Ruta ruta = rutasPosibles.get(0);
+
+        Traslado traslado = trasladoRepository.save(new Traslado(viandaDTO.getCodigoQR(), ruta,
+                EstadoTrasladoEnum.ASIGNADO, trasladoDTO.getFechaTraslado()));
+
+        return this.trasladoMapper.map(traslado);
+    }
+
 
     @Override
     public List<TrasladoDTO> trasladosDeColaborador(Long aLong, Integer integer, Integer integer1) {
@@ -100,10 +120,23 @@ public class Fachada implements ar.edu.utn.dds.k3003.facades.FachadaLogistica {
         traslado.setEstado(EstadoTrasladoEnum.EN_VIAJE);
         trasladoRepository.save(traslado);
 
+        String qrVianda = traslado.getQrVianda();
+        Ruta ruta = traslado.getRuta();
+        Integer heladeraOrigen = ruta.getHeladeraIdOrigen();
+        LocalDateTime fechaActual = LocalDateTime.now();
+
+        RetiroDTO retiroDTO = new RetiroDTO(qrVianda,null,heladeraOrigen);
+        fachadaViandas.modificarEstado(qrVianda, EstadoViandaEnum.EN_TRASLADO);
+        fachadaViandas.modificarHeladera(qrVianda,2);
+        fachadaHeladeras.retirar(retiroDTO);
 
 }
 
     @Override
-    public void trasladoDepositado(Long aLong) {
+    public void trasladoDepositado(Long trasladoId) {
+        Traslado traslado = trasladoRepository.findById(trasladoId);
+        traslado.setEstado(EstadoTrasladoEnum.ENTREGADO);
+        trasladoRepository.save(traslado);
+        fachadaViandas.modificarEstado(traslado.getQrVianda(), EstadoViandaEnum.DEPOSITADA);
     }
 }
