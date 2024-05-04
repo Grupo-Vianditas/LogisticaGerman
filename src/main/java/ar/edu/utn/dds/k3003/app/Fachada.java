@@ -57,31 +57,6 @@ public class Fachada implements ar.edu.utn.dds.k3003.facades.FachadaLogistica {
         }
         return trasladoDTO;
     }
-/*
-    @Override
-    public TrasladoDTO asignarTraslado(TrasladoDTO trasladoDTO) throws TrasladoNoAsignableException {
-
-        ViandaDTO viandaDTO = fachadaViandas.buscarXQR(trasladoDTO.getQrVianda());
-
-        try {
-            viandaDTO = fachadaViandas.buscarXQR(trasladoDTO.getQrVianda());
-        } catch (NoSuchElementException e) {
-
-            throw new TrasladoNoAsignableException();
-        }
-        List<Ruta> rutasPosibles = this.rutaRepository.findByHeladeras(trasladoDTO.getHeladeraOrigen(),
-                trasladoDTO.getHeladeraDestino());
-
-        Collections.shuffle(rutasPosibles);
-        Ruta ruta = rutasPosibles.get(0);
-
-        Traslado traslado = trasladoRepository.save(new Traslado(viandaDTO.getCodigoQR(), ruta,
-                EstadoTrasladoEnum.ASIGNADO, trasladoDTO.getFechaTraslado()));
-
-
-        return this.trasladoMapper.map(traslado);
-    }
-    */
 
     @Override
     public TrasladoDTO asignarTraslado(TrasladoDTO trasladoDTO) throws TrasladoNoAsignableException {
