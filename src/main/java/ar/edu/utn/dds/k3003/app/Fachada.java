@@ -121,4 +121,6 @@ public class Fachada implements ar.edu.utn.dds.k3003.facades.FachadaLogistica {
         fachadaViandas.modificarEstado(traslado.getQrVianda(), EstadoViandaEnum.DEPOSITADA);
     }
 
+
+
 }
