@@ -1,18 +1,24 @@
 package ar.edi.itn.dds.k3003.model;
 
 
+import ar.edu.utn.dds.k3003.facades.FachadaViandas;
 import ar.edu.utn.dds.k3003.facades.dtos.RutaDTO;
 import ar.edu.utn.dds.k3003.app.Fachada;
+import ar.edu.utn.dds.k3003.facades.dtos.TrasladoDTO;
+import ar.edu.utn.dds.k3003.facades.exceptions.TrasladoNoAsignableException;
 import ar.edu.utn.dds.k3003.repositories.RutaMapper;
 import ar.edu.utn.dds.k3003.repositories.RutaRepository;
 import ar.edu.utn.dds.k3003.repositories.TrasladoMapper;
 import ar.edu.utn.dds.k3003.repositories.TrasladoRepository;
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import java.util.List;
 import java.util.NoSuchElementException;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 public class FachadaLogisticaTest {
+
 
     @Test
     void testAgregar() {
@@ -40,4 +46,18 @@ public class FachadaLogisticaTest {
 
 
     }
+
+    @Test
+    void testTrasladosDeColaborador() {
+        Fachada fachada = new Fachada();
+        Long colaboradorId = 1L;
+        Integer heladeraOrigen = 100;
+        Integer heladeraDestino = 200;
+
+        List<TrasladoDTO> result = fachada.trasladosDeColaborador(colaboradorId, heladeraOrigen, heladeraDestino);
+
+        assertNull(result);
+    }
+
+
 }
