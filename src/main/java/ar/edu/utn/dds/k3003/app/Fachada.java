@@ -35,6 +35,12 @@ public class Fachada implements ar.edu.utn.dds.k3003.facades.FachadaLogistica {
         this.trasladoRepository = new TrasladoRepository();
     }
 
+    public Fachada(TrasladoMapper trasladoMapper, TrasladoRepository trasladoRepository, RutaMapper rutaMapper, RutaRepository rutaRepository) {
+        this.trasladoMapper = trasladoMapper;
+        this.trasladoRepository = trasladoRepository;
+        this.rutaRepository = rutaRepository;
+        this.rutaMapper = rutaMapper;
+    }
 
     @Override
     public RutaDTO agregar(RutaDTO rutaDTO) {
@@ -139,4 +145,5 @@ public class Fachada implements ar.edu.utn.dds.k3003.facades.FachadaLogistica {
         trasladoRepository.save(traslado);
         fachadaViandas.modificarEstado(traslado.getQrVianda(), EstadoViandaEnum.DEPOSITADA);
     }
+
 }
