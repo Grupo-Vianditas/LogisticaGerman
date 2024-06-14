@@ -15,9 +15,11 @@ public class Ruta {
     private Long colaboradorId;
     private Integer heladeraIdOrigen;
     private Integer heladeraIdDestino;
-
     private LocalDateTime fechaCreacion;
     private Boolean activo;
+
+    public Ruta() {
+    }
 
     public Ruta(Long colaboradorId, Integer heladeraIdOrigen, Integer heladeraIdDestino) {
         this.colaboradorId = colaboradorId;
@@ -27,4 +29,5 @@ public class Ruta {
         this.activo = true;
 
     }
+
 }

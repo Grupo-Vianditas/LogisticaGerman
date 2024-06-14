@@ -66,7 +66,8 @@ public class Fachada implements ar.edu.utn.dds.k3003.facades.FachadaLogistica {
                 trasladoDTO.getHeladeraDestino());
 
         if (rutasPosibles.isEmpty()) {
-            throw new TrasladoNoAsignableException();
+            throw new TrasladoNoAsignableException("ERROR");
+            // TODO : PUSE ERROR PORQUE CRESHEABA , CORREGIR EL COMENTARIO EN EL FUTURO A UN NOMBRE MAS REPRESENTATIVO
         }
 
         Collections.shuffle(rutasPosibles);
@@ -98,7 +99,7 @@ public class Fachada implements ar.edu.utn.dds.k3003.facades.FachadaLogistica {
     @Override
     public void trasladoRetirado(Long trasladoId) {
         Traslado traslado = trasladoRepository.findById(trasladoId);
-        traslado.setEstado(EstadoTrasladoEnum.EN_VIAJE);
+        traslado.setStatus(EstadoTrasladoEnum.EN_VIAJE);
         trasladoRepository.save(traslado);
 
         String qrVianda = traslado.getQrVianda();
@@ -116,7 +117,7 @@ public class Fachada implements ar.edu.utn.dds.k3003.facades.FachadaLogistica {
     @Override
     public void trasladoDepositado(Long trasladoId) {
         Traslado traslado = trasladoRepository.findById(trasladoId);
-        traslado.setEstado(EstadoTrasladoEnum.ENTREGADO);
+        traslado.setStatus(EstadoTrasladoEnum.ENTREGADO);
         trasladoRepository.save(traslado);
         fachadaViandas.modificarEstado(traslado.getQrVianda(), EstadoViandaEnum.DEPOSITADA);
     }

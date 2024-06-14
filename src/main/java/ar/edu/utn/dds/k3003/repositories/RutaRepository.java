@@ -34,4 +34,14 @@ public class RutaRepository {
                 x.getHeladeraIdDestino().equals(heladeraDestino)
         ).toList();
     }
+
+    //TODO: AGREGUE RUTA
+
+    public void addRuta(Ruta ruta) {
+        if (Objects.isNull(ruta.getId())) {
+            ruta.setId(seqId.getAndIncrement());
+        }
+        this.rutas.add(ruta);
+    }
+
 }

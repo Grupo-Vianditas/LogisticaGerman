@@ -1,4 +1,5 @@
 package ar.edu.utn.dds.k3003.repositories;
+
 import ar.edu.utn.dds.k3003.model.Traslado;
 
 import java.util.*;
@@ -27,5 +28,15 @@ public class TrasladoRepository {
                 String.format("No hay un traslado de id: %s", id)
         ));
     }
+
+    //TODO: AGREGUE TRASLADO
+
+    public void addTraslado(Traslado traslado) {
+        if (Objects.isNull(traslado.getId())) {
+            traslado.setId(seqId.getAndIncrement());
+        }
+        this.traslados.add(traslado);
+    }
+
 
 }

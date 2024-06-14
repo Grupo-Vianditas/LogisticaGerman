@@ -14,14 +14,24 @@ public class Traslado {
     private Long id;
     private final String qrVianda;
     private final Ruta ruta;
-    private EstadoTrasladoEnum estado;
+    private EstadoTrasladoEnum status;
     private final LocalDateTime fechaCreacion;
     private final LocalDateTime fechaTraslado;
+    private String colaboladorId;
 
-    public Traslado(String qrVianda, Ruta ruta, EstadoTrasladoEnum estado, LocalDateTime fechaTraslado) {
+
+    public Traslado() {
+        this.qrVianda = null;
+        this.ruta = null;
+        this.status = null;
+        this.fechaCreacion = null;
+        this.fechaTraslado = null;
+    }
+
+    public Traslado(String qrVianda, Ruta ruta, EstadoTrasladoEnum status, LocalDateTime fechaTraslado) {
         this.qrVianda = qrVianda;
         this.ruta = ruta;
-        this.estado = estado;
+        this.status = status;
         this.fechaCreacion = LocalDateTime.now();
         this.fechaTraslado = fechaTraslado;
     }
