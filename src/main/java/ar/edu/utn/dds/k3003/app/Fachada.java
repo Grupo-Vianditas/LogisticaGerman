@@ -92,6 +92,7 @@ public class Fachada implements ar.edu.utn.dds.k3003.facades.FachadaLogistica {
 
     @Override
     public void setViandasProxy(FachadaViandas fachadaViandas) {
+
         this.fachadaViandas = fachadaViandas;
     }
 
@@ -99,7 +100,7 @@ public class Fachada implements ar.edu.utn.dds.k3003.facades.FachadaLogistica {
     @Override
     public void trasladoRetirado(Long trasladoId) {
         Traslado traslado = trasladoRepository.findById(trasladoId);
-        traslado.setStatus(EstadoTrasladoEnum.EN_VIAJE);
+        traslado.setEstado(EstadoTrasladoEnum.EN_VIAJE);
         trasladoRepository.save(traslado);
 
         String qrVianda = traslado.getQrVianda();
@@ -117,7 +118,7 @@ public class Fachada implements ar.edu.utn.dds.k3003.facades.FachadaLogistica {
     @Override
     public void trasladoDepositado(Long trasladoId) {
         Traslado traslado = trasladoRepository.findById(trasladoId);
-        traslado.setStatus(EstadoTrasladoEnum.ENTREGADO);
+        traslado.setEstado(EstadoTrasladoEnum.ENTREGADO);
         trasladoRepository.save(traslado);
         fachadaViandas.modificarEstado(traslado.getQrVianda(), EstadoViandaEnum.DEPOSITADA);
     }
