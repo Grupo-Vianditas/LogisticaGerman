@@ -38,6 +38,8 @@ public class WebApp {
         app.post("/rutas", rutaController::agregar);
         app.post("/traslados", trasladosController::asignar);
         app.get("/traslados/{id}", trasladosController::obtener);
+        // app.get("/traslados/search/findByColaboradorId",trasladosController::obtener);
+        // app.patch("/traslados/{id}",trasladosController::obtener);
     }
 
     public static ObjectMapper createObjectMapper() {

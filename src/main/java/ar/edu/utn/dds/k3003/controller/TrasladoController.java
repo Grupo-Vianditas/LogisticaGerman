@@ -19,6 +19,7 @@ public class TrasladoController {
         try {
             var trasladoDTO = this.fachada.asignarTraslado(context.bodyAsClass(TrasladoDTO.class));
             context.json(trasladoDTO);
+            context.result("Traslado asignado correctamente");
         } catch (TrasladoNoAsignableException | NoSuchElementException e) {
             context.result(e.getLocalizedMessage());
             context.status(HttpStatus.BAD_REQUEST);
@@ -30,6 +31,7 @@ public class TrasladoController {
         try {
             var trasladoDTO = this.fachada.buscarXId(id);
             context.json(trasladoDTO);
+            context.result("Traslado solicitado");
         } catch (NoSuchElementException ex) {
             context.result(ex.getLocalizedMessage());
             context.status(HttpStatus.NOT_FOUND);
