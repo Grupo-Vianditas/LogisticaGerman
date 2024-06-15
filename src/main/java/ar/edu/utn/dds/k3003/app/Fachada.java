@@ -61,21 +61,30 @@ public class Fachada implements ar.edu.utn.dds.k3003.facades.FachadaLogistica {
 
     @Override
     public TrasladoDTO asignarTraslado(TrasladoDTO trasladoDTO) throws TrasladoNoAsignableException {
-        ViandaDTO viandaDTO = fachadaViandas.buscarXQR(trasladoDTO.getQrVianda());
 
-        List<Ruta> rutasPosibles = this.rutaRepository.findByHeladeras(trasladoDTO.getHeladeraOrigen(),
-                trasladoDTO.getHeladeraDestino());
+        var viandaDTO = fachadaViandas.buscarXQR(trasladoDTO.getQrVianda());
+
+        var rutasPosibles =
+                this.rutaRepository.findByHeladeras(
+                        trasladoDTO.getHeladeraOrigen(), trasladoDTO.getHeladeraDestino());
 
         if (rutasPosibles.isEmpty()) {
-            throw new TrasladoNoAsignableException("ERROR");
-            // TODO : PUSE ERROR PORQUE CRESHEABA , CORREGIR EL COMENTARIO EN EL FUTURO A UN NOMBRE MAS REPRESENTATIVO
+            throw new TrasladoNoAsignableException(
+                    String.format(
+                            "No hay rutas para ir de %s a %s ",
+                            trasladoDTO.getHeladeraOrigen(), trasladoDTO.getHeladeraDestino()));
         }
 
         Collections.shuffle(rutasPosibles);
-        Ruta ruta = rutasPosibles.get(0);
+        var ruta = rutasPosibles.get(0);
 
-        Traslado traslado = trasladoRepository.save(new Traslado(viandaDTO.getCodigoQR(), ruta,
-                EstadoTrasladoEnum.ASIGNADO, trasladoDTO.getFechaTraslado()));
+        var traslado =
+                trasladoRepository.save(
+                        new Traslado(
+                                viandaDTO.getCodigoQR(),
+                                ruta,
+                                EstadoTrasladoEnum.ASIGNADO,
+                                trasladoDTO.getFechaTraslado()));
 
         return this.trasladoMapper.map(traslado);
     }
@@ -158,6 +167,12 @@ public class Fachada implements ar.edu.utn.dds.k3003.facades.FachadaLogistica {
         fachadaViandas.modificarEstado(traslado.getQrVianda(), EstadoViandaEnum.DEPOSITADA);
     }
 
+    public TrasladoDTO actualizarEstadoTraslado(Long id, EstadoTrasladoEnum nuevoEstado) {
+        Traslado traslado = trasladoRepository.findById(id);
+        traslado.setEstado(nuevoEstado);
+        trasladoRepository.save(traslado);
+        return trasladoMapper.map(traslado);
+    }
 
 
 }

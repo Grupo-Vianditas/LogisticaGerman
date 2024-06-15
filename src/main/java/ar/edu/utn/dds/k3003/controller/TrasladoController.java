@@ -1,6 +1,7 @@
 package ar.edu.utn.dds.k3003.controller;
 
 import ar.edu.utn.dds.k3003.app.Fachada;
+import ar.edu.utn.dds.k3003.facades.dtos.EstadoTrasladoEnum;
 import ar.edu.utn.dds.k3003.facades.dtos.TrasladoDTO;
 import ar.edu.utn.dds.k3003.facades.exceptions.TrasladoNoAsignableException;
 import io.javalin.http.Context;
@@ -21,7 +22,6 @@ public class TrasladoController {
         try {
             var trasladoDTO = this.fachada.asignarTraslado(context.bodyAsClass(TrasladoDTO.class));
             context.json(trasladoDTO);
-            context.result("Traslado asignado correctamente");
         } catch (TrasladoNoAsignableException | NoSuchElementException e) {
             context.result(e.getLocalizedMessage());
             context.status(HttpStatus.BAD_REQUEST);
@@ -33,12 +33,12 @@ public class TrasladoController {
         try {
             var trasladoDTO = this.fachada.buscarXId(id);
             context.json(trasladoDTO);
-            context.result("Traslado solicitado");
         } catch (NoSuchElementException ex) {
             context.result(ex.getLocalizedMessage());
             context.status(HttpStatus.NOT_FOUND);
         }
     }
+
     public void obtenerTrasladosPorColaboradorId(Context context) {
         try {
             Long colaboradorId = context.queryParamAsClass("id", Long.class).get();
@@ -53,4 +53,33 @@ public class TrasladoController {
         }
     }
 
+    public void actualizarEstadoTraslado(Context context) {
+        try {
+            Long id = context.pathParamAsClass("id", Long.class).get();
+            String nuevoEstadoStr = context.bodyAsClass(PatchRequest.class).getStatus();
+            EstadoTrasladoEnum nuevoEstado = EstadoTrasladoEnum.valueOf(nuevoEstadoStr);
+
+            TrasladoDTO trasladoActualizado = fachada.actualizarEstadoTraslado(id, nuevoEstado);
+            context.json(trasladoActualizado);
+            context.status(200);
+        } catch (NoSuchElementException e) {
+            context.status(404).result("Traslado no encontrado");
+        } catch (IllegalArgumentException e) {
+            context.status(400).result("Estado de traslado no válido");
+        } catch (Exception e) {
+            context.status(500).result("Error interno del servidor: " + e.getMessage());
+        }
+    }
+
+    private static class PatchRequest {
+        private String status;
+
+        public String getStatus() {
+            return status;
+        }
+
+        public void setStatus(String status) {
+            this.status = status;
+        }
+    }
 }

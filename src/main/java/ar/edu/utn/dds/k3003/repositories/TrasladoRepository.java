@@ -33,12 +33,6 @@ public class TrasladoRepository {
 
     //TODO: AGREGUE TRASLADO
 
-    public void addTraslado(Traslado traslado) {
-        if (Objects.isNull(traslado.getId())) {
-            traslado.setId(seqId.getAndIncrement());
-        }
-        this.traslados.add(traslado);
-    }
 
     public List<Traslado> findByColaboradorId(Long colaboradorId) {
         return this.traslados.stream()

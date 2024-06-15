@@ -19,6 +19,6 @@ public class RutaController {
         var rutaDTORta = this.fachada.agregar(rutaDTO);
         context.json(rutaDTORta);
         context.status(HttpStatus.CREATED);
-        context.result("Ruta agregada correctamente");
+       // context.result("Ruta agregada correctamente");
     }
 }
