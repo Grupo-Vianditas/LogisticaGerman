@@ -21,6 +21,7 @@ public class WebApp {
         var env = System.getenv();
         var objectMapper = createObjectMapper();
         var fachada = new Fachada();
+
         fachada.setViandasProxy(new ViandasProxy(objectMapper));
 
         var port = Integer.parseInt(env.getOrDefault("PORT", "8080"));
