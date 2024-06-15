@@ -2,8 +2,10 @@ package ar.edu.utn.dds.k3003.repositories;
 
 import ar.edu.utn.dds.k3003.model.Traslado;
 
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicLong;
+import java.util.stream.Collectors;
 
 public class TrasladoRepository {
 
@@ -38,5 +40,18 @@ public class TrasladoRepository {
         this.traslados.add(traslado);
     }
 
+    public List<Traslado> findByColaboradorId(Long colaboradorId) {
+        return this.traslados.stream()
+                .filter(traslado -> traslado.getRuta().getColaboradorId().equals(colaboradorId))
+                .collect(Collectors.toList());
+    }
+
+    public List<Traslado> findByColaboradorIdAndFecha(Long colaboradorId, Integer mes, Integer anio) {
+        return this.traslados.stream()
+                .filter(traslado -> traslado.getRuta().getColaboradorId().equals(colaboradorId) &&
+                        traslado.getFechaTraslado().getMonthValue() == mes &&
+                        traslado.getFechaTraslado().getYear() == anio)
+                .collect(Collectors.toList());
+    }
 
 }

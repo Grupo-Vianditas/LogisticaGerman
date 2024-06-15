@@ -15,6 +15,7 @@ import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
 
 
 public class Fachada implements ar.edu.utn.dds.k3003.facades.FachadaLogistica {
@@ -79,11 +80,45 @@ public class Fachada implements ar.edu.utn.dds.k3003.facades.FachadaLogistica {
         return this.trasladoMapper.map(traslado);
     }
 
-
+/*
     @Override
-    public List<TrasladoDTO> trasladosDeColaborador(Long aLong, Integer integer, Integer integer1) {
-        return null;
+    public List<TrasladoDTO> trasladosDeColaborador(Long colaboradorId, Integer mes, Integer anio) {
+        List<Traslado> traslados = trasladoRepository.findByColaboradorIdAndFecha(colaboradorId, mes, anio);
+        if (traslados.isEmpty()) {
+            throw new NoSuchElementException("Colaborador no encontrado o no hay traslados en la fecha especificada");
+        }
+        return traslados.stream()
+                .map(trasladoMapper::map)
+                .collect(Collectors.toList());
     }
+*/
+    public List<TrasladoDTO> trasladosDeColaborador(Long colaboradorId, Integer mes, Integer anio) {
+        List<Traslado> traslados;
+        if (mes != null && anio != null) {
+            traslados = trasladoRepository.findByColaboradorIdAndFecha(colaboradorId, mes, anio);
+        } else {
+            traslados = trasladoRepository.findByColaboradorId(colaboradorId);
+        }
+        if (traslados.isEmpty()) {
+            throw new NoSuchElementException("Colaborador no encontrado o no hay traslados en la fecha especificada");
+        }
+        return traslados.stream()
+                .map(trasladoMapper::map)
+                .collect(Collectors.toList());
+    }
+
+    public List<TrasladoDTO> trasladosDeColaboradorPorId(Long colaboradorId) {
+        List<Traslado> traslados = trasladoRepository.findByColaboradorId(colaboradorId);
+        if (traslados.isEmpty()) {
+            throw new NoSuchElementException("Colaborador no encontrado o no hay traslados para el colaborador especificado");
+        }
+        return traslados.stream()
+                .map(trasladoMapper::map)
+                .collect(Collectors.toList());
+    }
+
+
+
 
     @Override
     public void setHeladerasProxy(FachadaHeladeras fachadaHeladeras) {

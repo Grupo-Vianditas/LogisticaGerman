@@ -5,6 +5,8 @@ import ar.edu.utn.dds.k3003.facades.dtos.TrasladoDTO;
 import ar.edu.utn.dds.k3003.facades.exceptions.TrasladoNoAsignableException;
 import io.javalin.http.Context;
 import io.javalin.http.HttpStatus;
+
+import java.util.List;
 import java.util.NoSuchElementException;
 
 public class TrasladoController {
@@ -37,4 +39,18 @@ public class TrasladoController {
             context.status(HttpStatus.NOT_FOUND);
         }
     }
+    public void obtenerTrasladosPorColaboradorId(Context context) {
+        try {
+            Long colaboradorId = context.queryParamAsClass("id", Long.class).get();
+
+            List<TrasladoDTO> traslados = fachada.trasladosDeColaboradorPorId(colaboradorId);
+            context.json(traslados);
+            context.status(200);
+        } catch (NoSuchElementException e) {
+            context.status(400).result("Colaborador no encontrado o no hay traslados para el colaborador especificado");
+        } catch (Exception e) {
+            context.status(500).result("Error interno del servidor: " + e.getMessage());
+        }
+    }
+
 }
