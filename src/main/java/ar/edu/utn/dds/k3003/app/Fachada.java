@@ -22,8 +22,16 @@ public class Fachada implements ar.edu.utn.dds.k3003.facades.FachadaLogistica {
 
     private final RutaRepository rutaRepository;
     private final RutaMapper rutaMapper;
+
     private final TrasladoRepository trasladoRepository;
     private final TrasladoMapper trasladoMapper;
+
+    //TODO:parte de implementacion de persistencia hacer clase RutaRepositoryImpl
+    //private final RutaRepositoryImpl heladeraRepositoryImpl;
+
+
+
+
     private FachadaViandas fachadaViandas;
     private FachadaHeladeras fachadaHeladeras;
 
@@ -173,6 +181,10 @@ public class Fachada implements ar.edu.utn.dds.k3003.facades.FachadaLogistica {
         trasladoRepository.save(traslado);
         return trasladoMapper.map(traslado);
     }
-
+/*
+    public void purgarTodo(){
+        this.rutasRepository.clear();
+    }
+*/
 
 }

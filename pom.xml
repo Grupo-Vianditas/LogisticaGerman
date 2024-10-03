@@ -16,9 +16,15 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
     <!-- Dependencies versions -->
-    <javalin.version>5.6.5</javalin.version>
     <junit.version>5.10.2</junit.version>
     <mockito.version>5.11.0</mockito.version>
+
+    <junit.version>5.10.2</junit.version>
+    <retrofit.version>2.11.0</retrofit.version>
+
+
+
+
   </properties>
 
 
@@ -67,13 +73,6 @@
 
 
     <dependency>
-      <groupId>io.javalin</groupId>
-      <artifactId>javalin</artifactId>
-      <version>5.6.5</version>
-    </dependency>
-
-
-    <dependency>
       <groupId>com.squareup.retrofit2</groupId>
       <artifactId>retrofit</artifactId>
       <version>2.9.0</version>
@@ -85,6 +84,44 @@
       <version>2.9.0</version>
     </dependency>
 
+
+    <dependency>
+      <groupId>org.hibernate</groupId>
+      <artifactId>hibernate-entitymanager</artifactId>
+      <version>5.6.15.Final</version>
+    </dependency>
+
+    <dependency>
+      <groupId>javax.validation</groupId>
+      <artifactId>validation-api</artifactId>
+      <version>2.0.1.Final</version>
+    </dependency>
+
+
+    <dependency>
+      <groupId>io.javalin</groupId>
+      <artifactId>javalin</artifactId>
+      <version>6.3.0</version>
+    </dependency>
+
+    <dependency>
+      <groupId>io.javalin</groupId>
+      <artifactId>javalin-micrometer</artifactId>
+      <version>6.3.0</version>
+    </dependency>
+
+
+    <dependency>
+      <groupId>io.micrometer</groupId>
+      <artifactId>micrometer-registry-prometheus</artifactId>
+      <version>1.13.4</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.squareup.retrofit2</groupId>
+      <artifactId>retrofit</artifactId>
+      <version>${retrofit.version}</version>
+    </dependency>
 
 
   </dependencies>
